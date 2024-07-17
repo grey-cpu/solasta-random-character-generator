@@ -1,0 +1,72 @@
+import random
+
+# Expanded lists of names
+male_first_names = ["Arin", "Brynn", "Cale", "Dara", "Elric", "Fay", "Gavin", "Hale", "Ivor", "Jor", "Kane", "Liam", "Marek", "Nyle", "Owen", "Pike", "Quin", "Reed", "Soren", "Talon", "Uther", "Vance", "Wade", "Xander", "Yorick", "Zane"]
+female_first_names = ["Aria", "Brynn", "Cora", "Dara", "Elena", "Faye", "Gwen", "Hara", "Iris", "Jade", "Kara", "Lara", "Maeve", "Nina", "Opal", "Pia", "Quinn", "Rose", "Sara", "Tara", "Ula", "Vera", "Wyn", "Xena", "Yara", "Zara"]
+last_names = ["Brightwood", "Ironfist", "Stormwind", "Silverleaf", "Darkwood", "Shadowalker", "Fireforge", "Frostblade", "Windrider", "Stonehammer", "Ravenclaw", "Stormbreaker", "Moonshadow", "Duskblade", "Lightbringer"]
+
+# Possible options for each character attribute
+races = ["Human", "Half-Elf", "High Elf", "Sylvan Elf", "Hill Dwarf", "Snow Dwarf", "Island Halfling", "Marsh Halfling", "Half-Orc"]
+classes = ["Barbarian", "Cleric", "Druid", "Fighter", "Monk", "Paladin", "Ranger", "Rogue", "Sorcerer", "Warlock", "Wizard"]
+backgrounds = ["Academic", "Acolyte", "Aristocrat", "Lawkeeper", "Lowlife", "Philosopher", "Sellsword", "Spy", "Wanderer"]
+alignments = ["Lawful Good", "Neutral Good", "Chaotic Good", "Lawful Neutral", "True Neutral", "Chaotic Neutral", "Lawful Evil", "Neutral Evil", "Chaotic Evil"]
+
+skills = ["Acrobatics", "Animal Handling", "Arcana", "Athletics", "Deception", "History", "Insight", "Intimidation", "Investigation", "Medicine", "Nature", "Perception", "Performance", "Persuasion", "Religion", "Sleight of Hand", "Stealth", "Survival"]
+
+def roll_ability_scores():
+    return sum(sorted(random.choices(range(1, 7), k=4))[1:])
+
+def generate_name():
+    gender = random.choice(["male", "female"])
+    first_name = random.choice(male_first_names if gender == "male" else female_first_names)
+    last_name = random.choice(last_names)
+    return f"{first_name} {last_name}"
+
+def generate_backstory(character):
+    race = character["Race"]
+    char_class = character["Class"]
+    background = character["Background"]
+    alignment = character["Alignment"]
+    name = character["Name"]
+    backstories = [
+        f"{name} grew up in a small village, dreaming of adventure and heroism. One evening, while sitting by the fire, they turned to their mentor and said, 'One day, I'll be a hero just like you.' After training as a {char_class}, they set out to make their mark on the world.",
+        f"As a child, {name} was fascinated by stories of magic and mystery. 'Tell me another tale of the ancient wizards!' they would plead to the village elder. Now, as a {char_class}, they seek to uncover the secrets of the arcane.",
+        f"Raised by a group of wandering merchants, {name} has seen much of the world. 'Every place has its own magic,' their father used to say. Their experiences have shaped them into a skilled {char_class}.",
+        f"{name} was an orphan, taken in by a kind {race.lower()} who taught them the ways of the {char_class.lower()}. 'You'll always have a home here,' their adoptive parent assured them. Their guidance set them on their current path.",
+        f"After a mysterious event in their hometown, {name} felt a calling to become a {char_class.lower()}. 'I don't know why, but I must follow this path,' they confided to their best friend. They now travel the land, guided by a sense of destiny.",
+        f"{name} always felt different from others in their village. 'There's something special about you,' their mother often said. Their unique abilities as a {char_class.lower()} were both a blessing and a curse, leading them to seek acceptance and understanding.",
+        f"{name} discovered their talent for {char_class.lower()} abilities early in life. 'You've got a gift,' their teacher remarked. Their dedication to mastering their skills has made them a formidable {char_class.lower()}.",
+        f"Growing up in a harsh environment, {name} learned to survive through sheer willpower. 'Never give up,' their mentor advised. Their experiences forged them into a resilient {char_class.lower()} with a strong sense of justice.",
+        f"{name} always had a knack for getting into trouble, but their quick thinking and agility helped them become a skilled {char_class.lower()}. 'You have the makings of a great {char_class.lower()},' a local rogue once told them. Now, they seek to use their talents for a greater purpose.",
+        f"Born under an ominous star, {name} was destined for greatness. 'The stars don't lie,' the village astrologer declared. As a {char_class.lower()}, they navigate the fine line between light and darkness, seeking to fulfill their destiny."
+    ]
+    return random.choice(backstories) + f" They are a {alignment.lower()} {race.lower()} from a {background.lower()} background."
+
+def generate_character():
+    race = random.choice(races)
+    char_class = random.choice(classes)
+    background = random.choice(backgrounds)
+    
+    alignment = random.choice(alignments)
+    
+    character = {
+        "Name": generate_name(),
+        "Race": race,
+        "Class": char_class,
+        "Background": background,
+        "Alignment": alignment,
+        "Strength": roll_ability_scores(),
+        "Dexterity": roll_ability_scores(),
+        "Constitution": roll_ability_scores(),
+        "Intelligence": roll_ability_scores(),
+        "Wisdom": roll_ability_scores(),
+        "Charisma": roll_ability_scores(),
+        "Skills": random.sample(skills, 3),
+    }
+    character["Backstory"] = generate_backstory(character)
+    return character
+
+# Generate and print a character
+character = generate_character()
+for attribute, value in character.items():
+    print(f"{attribute}: {value}")
